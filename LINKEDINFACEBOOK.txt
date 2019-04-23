@@ -1,0 +1,1487 @@
+use SocialMediaDB
+
+/************************************************\ TABLOLAR
+
+CREATE TABLE SiteUser (
+UserId INT  PRIMARY KEY,
+Firstname VARCHAR(30) NOT NULL,
+Lastname VARCHAR(30) NOT NULL,
+Email VARCHAR(50) NOT NULL,
+DateOfBirth VARCHAR(50) ,
+UserPassword VARCHAR(15) NOT NULL,
+UserName VARCHAR(15) NOT NULL,
+Phone INT
+
+)
+
+CREATE TABLE UserProfile (
+ProfileId INT  PRIMARY KEY,
+UserId INT NOT NULL ,
+FOREIGN KEY (UserId) REFERENCES SiteUser(UserId),
+Relationship VARCHAR(50),
+RelationShipUserId int ,
+FOREIGN KEY (RelationShipUserId) REFERENCES SiteUser(UserId),
+About VARCHAR(100),
+JobCompany int,
+FOREIGN KEY (JobCompany) REFERENCES Company(companyId),
+CerrentJob VARCHAR(50),
+Adress VARCHAR(50)
+)
+
+
+
+CREATE TABLE CV (
+CVID INT  PRIMARY KEY,
+UserId INT NOT NULL ,
+FOREIGN KEY (UserId) REFERENCES SiteUser(UserId),
+LastUptade VARCHAR(50),
+CvDate VARCHAR(100)
+CVLINK VARCHAR(MAX)
+
+)
+
+CREATE TABLE GROUPS (
+GroupID INT  PRIMARY KEY,
+CreatorId INT NOT NULL ,
+FOREIGN KEY (CreatorId) REFERENCES SiteUser(UserId),
+GroupName VARCHAR(50),
+CreatedDate VARCHAR(50),
+GroupType VARCHAR(100),
+GroupStatus VARCHAR(15),
+GroupDescription VARCHAR(200)
+
+)
+
+
+CREATE TABLE MemberOfGroups (
+MemberId INT,
+GroupId INT NOT NULL ,
+FOREIGN KEY (MemberId) REFERENCES SiteUser(UserId),
+FOREIGN KEY (GroupId) REFERENCES GROUPS(GroupID),
+PRIMARY KEY(MemberId,GroupId),
+Role VARCHAR(15),
+JoinDate VARCHAR(30)
+
+)
+
+CREATE TABLE siteEvents (
+EventId INT PRIMARY KEY,
+creatorId INT NOT NULL ,
+FOREIGN KEY (creatorId) REFERENCES SiteUser(UserId),
+EventName VARCHAR(50),
+CreatedDate VARCHAR(50),
+EventType VARCHAR(100),
+DateOfEvent VARCHAR(30),
+EventDescription VARCHAR(200)
+
+)
+
+
+
+CREATE TABLE EventPeople (
+UserId INT,
+EventId INT NOT NULL ,
+FOREIGN KEY (UserId) REFERENCES SiteUser(UserId),
+FOREIGN KEY (EventId) REFERENCES siteEvents(EventId),
+PRIMARY KEY(userId,EventId),
+InterestStatus VARCHAR(30)
+
+)
+
+
+CREATE TABLE Company (
+companyId INT PRIMARY KEY,
+
+CompanyName VARCHAR(30),
+CompanyLocation VARCHAR(30),
+DateOfFoundation VARCHAR(30),
+Founder VARCHAR(60)
+
+)
+
+
+
+CREATE TABLE CompanyType (
+companyId INT ,
+TypeName VARCHAR(20) ,
+FOREIGN KEY(companyId) REFERENCES Company(companyId),
+PRIMARY KEY(companyID,TypeName),
+
+)
+
+
+CREATE TABLE JobExperience (
+ExperienceId INT PRIMARY KEY,
+UserId INT NOT NULL ,
+companyId INT NOT NULL ,
+FOREIGN KEY (UserId) REFERENCES SiteUser(UserId),
+FOREIGN KEY (companyId) REFERENCES Company(companyId),
+Departman VARCHAR(30),
+DateOfStart VARCHAR(30),
+DateOfLastDay VARCHAR(30),
+
+)
+
+
+
+CREATE TABLE Jobs (
+JobOfferId INT PRIMARY KEY,
+companyId INT NOT NULL ,
+FOREIGN KEY (companyId) REFERENCES Company(companyId),
+Departman VARCHAR(30),
+Salary INT,
+JobLocation VARCHAR(30),
+NeededPeople INT,
+)
+
+
+
+CREATE TABLE Follow (
+PersonId INT ,
+FollowerId INT NOT NULL ,
+FOREIGN KEY (PersonId) REFERENCES SiteUser(UserId),
+FOREIGN KEY (FollowerId) REFERENCES SiteUser(UserId),
+DateOfFollow VARCHAR(30),
+PRIMARY KEY(PersonId,FollowerId),
+reg_date TIMESTAMP
+)
+CREATE TABLE Friend (
+PersonId INT ,
+Person2Id INT NOT NULL ,
+FOREIGN KEY (PersonId) REFERENCES SiteUser(UserId),
+FOREIGN KEY (Person2Id) REFERENCES SiteUser(UserId),
+DateOfFriendship VARCHAR(30),
+PRIMARY KEY(PersonId,Person2Id),
+reg_date TIMESTAMP
+)
+
+CREATE TABLE Page (
+PageID INT  PRIMARY KEY,
+CreatorId INT NOT NULL ,
+FOREIGN KEY (CreatorId) REFERENCES SiteUser(UserId),
+PageName VARCHAR(50),
+CreatedDate VARCHAR(50),
+PageType VARCHAR(100),
+PageDescription VARCHAR(200),
+
+)
+
+CREATE TABLE MemberOfPage (
+MemberId INT,
+PageId INT NOT NULL ,
+FOREIGN KEY (MemberId) REFERENCES SiteUser(UserId),
+FOREIGN KEY (PageId) REFERENCES Page(PageID),
+PRIMARY KEY(MemberId,PageId),
+Role VARCHAR(15),
+JoinDate VARCHAR(30),
+
+)
+CREATE TABLE FollowedCompany (
+CompanyID INT,
+UserID INT,
+DateOfFollow VARCHAR(50) ,
+FOREIGN KEY (CompanyID) REFERENCES Company(companyId),
+FOREIGN KEY (UserID) REFERENCES SiteUser(UserId),
+PRIMARY KEY(CompanyID,UserID)
+
+)
+
+Create Table Chat(
+
+SenderID int,
+ReceiverID int,
+Message VARCHAR(max),
+MessageDate Varchar(20),
+MessageId int Primary key,
+
+Foreign key (SenderID) REFERENCES SiteUser(UserId),
+Foreign key (ReceiverID) References SiteUser(UserId)
+
+)
+
+Create table Notifications (
+
+userId int,
+NotificationType Varchar(15),
+NotificationDate VARCHAR(50),
+
+
+Foreign key  (userId) REFERENCES SiteUser(UserId)
+)
+
+ALTER TABLE UserProfile ADD CurrentJob int FOREIGN KEY(CurrentJob) references Company ;   sonradan eklendi
+
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (, , , , , , ,);
+
+
+/* veriler ?\
+
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (1,'Yetkin' ,'Sutcu' ,'yetsut@gmail.com' ,'24.11.1995' ,'5846854Adfsa' , 'yetkinstc',05456459664)
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (5,'Lisette ' ,'Vulferam' ,'Vulferam@gmail.com' ,'01.07.2000' ,'2000books' , 'FortniyePlayer',523345125)
+
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (4,'Hayato ' ,'Degucchi' ,'Degucchi@gmail.com' ,'11.03.1975' ,'Nippon' , 'Degucchi35',042-632-851)
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (3,'Graeme ' ,'Lyons' ,'Lyons@gmail.com' ,'14.03.1999' ,'LyonsXxX123' , 'LyonsAreBest',73360466)
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (2,'Maude ' ,'Hartley' ,'Hartley@gmail.com' ,'14.12.1985' ,'IloveLondon' , 'Hartley_King',79460476)
+
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (6,'Greig' ,'Thalia' ,'Thalia@gmail.com' ,'17.09.1965' ,'IloveMyGrandSon' , 'HGrandsonLoveU',985044689)
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (7,'Mefodiy' ,'Siofra' ,'Siofra@gmail.com' ,'08.02.1997' ,'35sdg4365' , 'SiofraMef',7795547)
+
+
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (8,'Myriam' ,'Tatenda' ,'Tatenda@gmail.com' ,'03.03.1993' ,'NoNoNo232' , 'TatendaMYriam',888446685)
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (9,'Bláthnat' ,'Ramachandra' ,'Ramachandraa@gmail.com' ,'07.10.1987' ,'3dsaa365' , 'xXamachandraxX',735434448)
+
+
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (10,'Makenna' ,'Anna' ,'Anna@gmail.com' ,'16.05.1979' ,'neverNever23' , ' AnnaBestMom',56888459)
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (11,'Lis' ,'Walentyna' ,'Walentyna324@gmail.com' ,'08.07.1996' ,'4***34365' , ' GreatWalentyna',76657554)
+
+
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (12,'Brando' ,'Devadas' ,'BrandoDevadas@gmail.com' ,'10.01.2006' ,'LovePets' , 'TheHandsomeGuy',95487775)
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (13,'Beatrice' ,'Apoorva' ,'Apoorva@gmail.com' ,'18.02.1997' ,'Lon^4asd' , 'apoorva3',12388756)
+
+
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (14,'Mahmut' ,'Aslan' ,'Maslant@gmail.com' ,'17.09.1995' ,'*325_234' , 'IloveDrinking',25005768)
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (15,'Ceri' ,'Sime' ,'Sime@gmail.com' ,'08.02.1997' ,'*Nam342' , 'Simeceri2',5687987)
+
+
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (16,'Sa ida' ,'Kawacatoose' ,'KawacatooseSa@gmail.com' ,'29.09.1994' ,'34_5ggAASD' , 'KawacatooseSa',85225554)
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (17,'Gerfrid' ,'Konrad' ,'Konrad23@gmail.com' ,'18.07.1987' ,'^g3^WEQ' , 'KonradGerfrid',7795547)
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (18,'Noelle' ,'Hálfdan' ,'Hálfdan@gmail.com' ,'23.06.2005' ,'ASD25ASG' , 'HálfdanBoss',57874454)
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (19,'Tea' ,'Ruthi' ,'Ruthi@gmail.com' ,'27.04.1997' ,'ye^TE3' , 'Ruthi43',7795547)
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (20,'Sawyl' ,'Rita' ,'SoccerLover@gmail.com' ,'28.11.1988' ,'g3As44as' , 'SoccerMyWorld',56785649)
+
+
+/* friend deðerleri *\ ( hepsine data eklenecek unutmuþum )
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (1,2)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (1,3)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (1,9)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (1,10)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (1,15)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (1,17)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (1,18)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (1,19)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (2,1)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (2,3)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (2,5)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (2,7)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (2,8)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (2,15)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (2,20)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (3,1)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (3,2)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (3,5)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (3,9)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (3,11)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (3,13)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (3,14)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (3,19)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (3,20)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (4,5)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (4,6)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (4,7)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (4,10)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (4,15)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (5,2)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (5,3)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (5,4)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (5,10)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (5,13)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (5,18)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (5,19)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (6,4)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (6,7)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (6,9)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (6,16)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (7,2)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (7,4)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (7,6)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (7,9)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (7,12)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (7,17)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (7,20)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (8,2)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (8,13)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (8,12)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (8,16)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (9,1)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (9,3)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (9,6)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (9,7)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (9,16)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (9,19)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (10,1)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (10,4)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (10,5)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (10,14)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (10,17)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (10,20)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (11,3)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (11,12)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (11,14)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (11,18)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (12,7)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (12,8)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (12,11)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (12,13)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (12,15)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (12,20)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (13,3)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (13,5)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (13,8)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (13,12)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (14,3)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (14,11)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (14,15)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (14,16)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (14,17)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (14,18)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (15,1)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (15,1)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (15,2)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (15,4)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (15,12)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (15,14)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (15,16)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (15,17)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (16,6)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (16,8)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (16,9)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (16,14)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (16,15)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (16,18)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (16,20)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (17,1)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (17,7)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (17,10)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (17,14)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (17,15)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (18,1)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (18,5)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (18,11)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (18,14)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (18,16)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (18,19)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (19,1)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (19,3)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (19,5)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (19,9)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (19,20)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (20,3)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (20,7)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (20,10)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (20,12)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (20,16)
+INSERT INTO Friend(PersonId,Person2Id)
+VALUES (20,19)
+
+ALTER TABLE UserProfile ADD RelationShipUsedId int NULL  FOREIGN KEY (RelationShipUserId) REFERENCES SiteUser;  
+ALTER TABLE UserProfile ADD CurrentJob VARCHAR(20) NULL  ; 
+ALTER TABLE UserProfile ADD JobCompany int FOREIGN KEY (JobCompany) REFERENCES Company  ; 
+
+
+
+
+
+
+/* company *\
+
+INSERT INTO Company(companyId, CompanyName, CompanyLocation,DateOfFoundation,Founder)
+VALUES (1001,'Valve','USA/WASHINGTON','1996','Gabe Newell')
+
+INSERT INTO Company(companyId, CompanyName, CompanyLocation,DateOfFoundation,Founder)
+VALUES (1002,'Nvdia','USA/CALIFORNIA','1993','Jensen Huang, Curtis Priem, Chris Malachowsky')
+
+INSERT INTO Company(companyId, CompanyName, CompanyLocation,DateOfFoundation,Founder)
+VALUES (1003,'Adope Systems','USA/CALIFORNIA','1982','Shantanu Narayen')
+
+INSERT INTO Company(companyId, CompanyName, CompanyLocation,DateOfFoundation,Founder)
+VALUES (1004,'Oracle','USA/CALIFORNIA','1977','Larry Ellison, Bob Miner, Ed Oates')
+
+
+INSERT INTO Company(companyId, CompanyName, CompanyLocation,DateOfFoundation,Founder)
+VALUES (1005,'Microsoft','USA/NEW MEXICO','1975','Bill Gates, Paul Gardner Allen')
+
+INSERT INTO Company(companyId, CompanyName, CompanyLocation,DateOfFoundation,Founder)
+VALUES (1006,'Sony','JP/TOKYO','1946','Akio Morita, Masaru Ibuka')
+
+INSERT INTO Company(companyId, CompanyName, CompanyLocation,DateOfFoundation,Founder)
+VALUES (1007,'Samsung','KR/SEUL','1938','Lee Byung-chul')
+
+INSERT INTO Company(companyId, CompanyName, CompanyLocation,DateOfFoundation,Founder)
+VALUES (1008,'Yahoo!','USA/CALIFORNIA','1995','Jerry Yang, David Filo')
+
+INSERT INTO Company(companyId, CompanyName, CompanyLocation,DateOfFoundation,Founder)
+VALUES (1009,'Paypal','USA/CALIFORNIA','1998','Elon Musk, Peter Thiel, Max Levchin, Ken Howery, Luke Nosek, Yu Pan')
+
+INSERT INTO Company(companyId, CompanyName, CompanyLocation,DateOfFoundation,Founder)
+VALUES (1010,'ASELSAN','TR/ANKARA','1975','Turk Silahlý Kuvvetlerini Guclendirme Vakfi')
+
+/*  Compony type *\
+
+INSERT INTO CompanyType(companyId, TypeName)
+VALUES (1001,'Gaming')
+INSERT INTO CompanyType(companyId, TypeName)
+VALUES (1001,'E-Commerce')
+INSERT INTO CompanyType(companyId, TypeName)
+VALUES (1002,'Hardware')
+INSERT INTO CompanyType(companyId, TypeName)
+VALUES (1003,'Software')
+INSERT INTO CompanyType(companyId, TypeName)
+VALUES (1004,'Software')
+INSERT INTO CompanyType(companyId, TypeName)
+VALUES (1005,'Software')
+INSERT INTO CompanyType(companyId, TypeName)
+VALUES (1006,'Software')
+INSERT INTO CompanyType(companyId, TypeName)
+VALUES (1006,'Console')
+INSERT INTO CompanyType(companyId, TypeName)
+VALUES (1006,'Embedded Systems')
+INSERT INTO CompanyType(companyId, TypeName)
+VALUES (1006,'Gaming')
+INSERT INTO CompanyType(companyId, TypeName)
+VALUES (1006,'E-Commerce')
+INSERT INTO CompanyType(companyId, TypeName)
+VALUES (1007,'MobilePhone')
+INSERT INTO CompanyType(companyId, TypeName)
+VALUES (1007,'Hardware')
+INSERT INTO CompanyType(companyId, TypeName)
+VALUES (1007,'Embedded Systems')
+INSERT INTO CompanyType(companyId, TypeName)
+VALUES (1008,'Social Media')
+INSERT INTO CompanyType(companyId, TypeName)
+VALUES (1008,'Searching Engine')
+INSERT INTO CompanyType(companyId, TypeName)
+VALUES (1009,'E-Banking')
+INSERT INTO CompanyType(companyId, TypeName)
+VALUES (1010,'Software')
+INSERT INTO CompanyType(companyId, TypeName)
+VALUES (1010,'Defence Systems')
+
+
+/* dursun þuanlýk ekleyeceðim *\
+INSERT INTO UserProfile(ProfileId, UserId, Relationship,About,JobCompany,RelationShipUserId,CurrentJob)
+VALUES (01,1,'','',,,'')
+
+INSERT INTO UserProfile(ProfileId, UserId, Relationship,About,JobCompany,RelationShipUserId,CurrentJob,Adress)
+VALUES (02,2,'Married','Ilove my life',1003,NULL,'Software Developer','USA/CALIFORNIA')
+
+INSERT INTO UserProfile(ProfileId, UserId, Relationship,About,JobCompany,RelationShipUserId,CurrentJob,Adress)
+VALUES (03,3,'In Relationship','Ilove my Gaming',NULL,5,'Does not work','USA/CALIFORNIA')
+
+INSERT INTO UserProfile(ProfileId, UserId, Relationship,About,JobCompany,RelationShipUserId,CurrentJob,Adress)
+VALUES (04,4,'Married','I love sushies',1006,NULL,'Software Developer','JP/TOKYO')
+
+INSERT INTO UserProfile(ProfileId, UserId, Relationship,About,JobCompany,RelationShipUserId,CurrentJob,Adress)
+VALUES (05,5,'In Relationship','Ilove my life',NULL,3,'Looking for Job','USA/CALIFORNIA')
+
+INSERT INTO UserProfile(ProfileId, UserId, Relationship,About,JobCompany,RelationShipUserId,CurrentJob,Adress)
+VALUES (06,6,'Married','Ilove my life',1003,NULL,'Software Developer','USA/CALIFORNIA')
+
+INSERT INTO UserProfile(ProfileId, UserId, Relationship,About,JobCompany,RelationShipUserId,CurrentJob,Adress)
+VALUES (07,7,'Married','Ilove my life',1009,NULL,'Software Developer','USA/CALIFORNIA')
+
+INSERT INTO UserProfile(ProfileId, UserId, Relationship,About,JobCompany,RelationShipUserId,CurrentJob,Adress)
+VALUES (08,8,'Single','Ilove nothing',1008,NULL,'Software Developer','USA/CALIFORNIA')
+
+INSERT INTO UserProfile(ProfileId, UserId, Relationship,About,JobCompany,RelationShipUserId,CurrentJob,Adress)
+VALUES (09,9,'Married','game for gaming',1007,NULL,'Software Developer','KR/SEUL')
+
+INSERT INTO UserProfile(ProfileId, UserId, Relationship,About,JobCompany,RelationShipUserId,CurrentJob,Adress)
+VALUES (010,10,'Widow','I hate everything except enginnering',1005,NULL,'Software Developer','USA/NEW MEXICO')
+
+INSERT INTO UserProfile(ProfileId, UserId, Relationship,About,JobCompany,RelationShipUserId,CurrentJob,Adress)
+VALUES (011,11,'Single','Hard working',1002,Null,'Hardware Developer','USA/CALIFORNIA')
+
+INSERT INTO UserProfile(ProfileId, UserId, Relationship,About,JobCompany,RelationShipUserId,CurrentJob,Adress)
+VALUES (012,12,'Single','Love coding',Null,NULL,'Does not work','SP/MADRID')
+
+INSERT INTO UserProfile(ProfileId, UserId, Relationship,About,JobCompany,RelationShipUserId,CurrentJob,Adress)
+VALUES (013,13,'In Relationship','Ilove my life',NULL,19,'Looking for Job','USA/NEVADA')
+
+INSERT INTO UserProfile(ProfileId, UserId, Relationship,About,JobCompany,RelationShipUserId,CurrentJob,Adress)
+VALUES (014,14,'Single','Ilove Drinking so much',1010,NULL,'Software Developer','TR/ANKARA')
+
+INSERT INTO UserProfile(ProfileId, UserId, Relationship,About,JobCompany,RelationShipUserId,CurrentJob,Adress)
+VALUES (015,15,'Single','animals',1009,NULL,'Software Developer','USA/CALIFORNIA')
+
+INSERT INTO UserProfile(ProfileId, UserId, Relationship,About,JobCompany,RelationShipUserId,CurrentJob,Adress)
+VALUES (016,16,'Single','soccer lover',1004,NULL,'Software Developer','USA/CALIFORNIA')
+
+INSERT INTO UserProfile(ProfileId, UserId, Relationship,About,JobCompany,RelationShipUserId,CurrentJob,Adress)
+VALUES (017,17,'Married','All thing that I have family',1003,NULL,'Software Developer','USA/CALIFORNIA')
+
+INSERT INTO UserProfile(ProfileId, UserId, Relationship,About,JobCompany,RelationShipUserId,CurrentJob,Adress)
+VALUES (018,18,'Single','',Null,NULL,'Does not work','NL/AMSTERDAM')
+
+INSERT INTO UserProfile(ProfileId, UserId, Relationship,About,JobCompany,RelationShipUserId,CurrentJob,Adress)
+VALUES (019,19,'IN Relationship','work work work',Null,13,'Looking for job','USA/NEVADA')
+
+INSERT INTO UserProfile(ProfileId, UserId, Relationship,About,JobCompany,RelationShipUserId,CurrentJob,Adress)
+VALUES (020,20,'Married','I hate everything except soccer',1001,NULL,'Software Developer','USA/WASHINGTON')
+
+
+/***** CompanyFollow toplasý *\
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1001,1,'12.12.2017')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1007,1,'12.11.2017')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1009,1,'16.09.2016')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1010,1,'15.06.2017')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1001,2,'12.03.2013')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1005,2,'11.11.2015')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1003,2,'26.03.2016')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1010,2,'15.06.2017')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1002,3,'12.12.2017')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1005,3,'14.06.2017')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1009,3,'12.05.2016')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1001,3,'25.03.2017')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1002,4,'12.12.2017')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1007,4,'12.11.2017')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1003,4,'16.09.2016')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1006,4,'15.06.2017')
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1001,5,'12.05.2017')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1007,5,'11.11.2017')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1004,5,'15.04.2016')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1008,6,'15.11.2016')
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1001,6,'12.12.2017')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1002,7,'12.11.2016')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1003,7,'26.09.2016')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1007,7,'25.06.2015')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1001,8,'12.12.2017')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1007,8,'12.11.2017')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1009,8,'09.04.2016')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1010,8,'15.05.2015')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1001,9,'12.12.2017')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1004,10,'12.10.2018')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1006,10,'06.03.2016')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1007,10,'105.06.2017')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1001,11,'12.12.2017')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1007,12,'04.01.2017')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1009,12,'02.02.2016')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1010,13,'30.06.2017')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1002,14,'12.02.2017')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1003,14,'22.01.2017')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1005,15,'26.03.2016')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1005,16,'05.04.2017')
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1001,17,'23.02.2017')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1006,17,'02.03.2016')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1005,17,'06.09.2016')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1009,17,'17.07.2017')
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1001,19,'02.01.2017')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1007,19,'03.11.2017')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1009,20,'14.01.2016')
+
+INSERT INTO FollowedCompany(CompanyID,UserID,DateOfFollow)
+VALUES (1010,20,'25.08.2017')
+
+
+/***** followlar için takip edilecek user ekledik ***** \
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (21,'Bill' ,'Gates' ,'-------' ,'---------' ,'---------' , '----------',NULL)
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (22,'Elon' ,'Musk' ,'-------' ,'---------' ,'---------' , '----------',NULL)
+
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (23,'Jeff' ,'Bezos' ,'-------' ,'---------' ,'---------' , '----------',NULL)
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (24,'Kenichiro' ,'Yoshida' ,'-------' ,'---------' ,'---------' , '----------',NULL)
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (25,'Tim' ,'Cook' ,'-------' ,'---------' ,'---------' , '----------',NULL)
+
+/************ follow lar ***\
+INSERT INTO Follow(PersonId,FollowerId,DateOfFollow)
+VALUES (21,1,'01.01.2018')
+INSERT INTO Follow(PersonId,FollowerId,DateOfFollow)
+VALUES (21,2,'02.03.2017')
+INSERT INTO Follow(PersonId,FollowerId,DateOfFollow)
+VALUES (21,13,'07.11.2017')
+INSERT INTO Follow(PersonId,FollowerId,DateOfFollow)
+VALUES (21,17,'08.10.2017')
+INSERT INTO Follow(PersonId,FollowerId,DateOfFollow)
+VALUES (21,20,'15.05.2018')
+INSERT INTO Follow(PersonId,FollowerId,DateOfFollow)
+VALUES (22,2,'21.09.2017')
+INSERT INTO Follow(PersonId,FollowerId,DateOfFollow)
+VALUES (22,6,'20.07.2017')
+INSERT INTO Follow(PersonId,FollowerId,DateOfFollow)
+VALUES (22,12,'30.15.2017')
+INSERT INTO Follow(PersonId,FollowerId,DateOfFollow)
+VALUES (22,20,'24.14.2017')
+
+INSERT INTO Follow(PersonId,FollowerId,DateOfFollow)
+VALUES (23,5,'22.12.2017')
+
+INSERT INTO Follow(PersonId,FollowerId,DateOfFollow)
+VALUES (23,15,'11.01.2017')
+
+INSERT INTO Follow(PersonId,FollowerId,DateOfFollow)
+VALUES (23,17,'18.05.2017')
+
+INSERT INTO Follow(PersonId,FollowerId,DateOfFollow)
+VALUES (23,18,'30.11.2017')
+INSERT INTO Follow(PersonId,FollowerId,DateOfFollow)
+VALUES (24,13,'29.10.2017')
+
+
+INSERT INTO Follow(PersonId,FollowerId,DateOfFollow)
+VALUES (24,16,'17.08.2017')
+INSERT INTO Follow(PersonId,FollowerId,DateOfFollow)
+VALUES (24,18,'05.03.2017')
+INSERT INTO Follow(PersonId,FollowerId,DateOfFollow)
+VALUES (25,2,'04.03.2017')
+INSERT INTO Follow(PersonId,FollowerId,DateOfFollow)
+VALUES (25,3,'04.03.2017')
+INSERT INTO Follow(PersonId,FollowerId,DateOfFollow)
+VALUES (25,6,'17.10.2018')
+
+INSERT INTO Follow(PersonId,FollowerId,DateOfFollow)
+VALUES (25,7,'03.09.2017')
+INSERT INTO Follow(PersonId,FollowerId,DateOfFollow)
+VALUES (25,9,'14.12.2017')
+INSERT INTO Follow(PersonId,FollowerId,DateOfFollow)
+VALUES (25,12,'10.10.2017')
+INSERT INTO Follow(PersonId,FollowerId,DateOfFollow)
+VALUES (25,16,'11.05.2017')
+
+/************* CV *********\
+
+
+INSERT INTO CV(CVID,UserId,LastUptade,CvDate,CVLINK)
+VALUES (1,1,'01.01.2018','01.01.2018','www.socaialmedia.com/cv/cv=?4123423')
+INSERT INTO CV(CVID,UserId,LastUptade,CvDate,CVLINK)
+VALUES (2,2,'22.01.2018','22.01.2018','www.socaialmedia.com/cv/cv=?4123422')
+INSERT INTO CV(CVID,UserId,LastUptade,CvDate,CVLINK)
+VALUES (3,3,'11.01.2018','11.01.2018','www.socaialmedia.com/cv/cv=?4123424')
+INSERT INTO CV(CVID,UserId,LastUptade,CvDate,CVLINK)
+VALUES (4,4,'21.02.2018','21.02.2018','www.socaialmedia.com/cv/cv=?4123425')
+INSERT INTO CV(CVID,UserId,LastUptade,CvDate,CVLINK)
+VALUES (5,5,'11.11.2018','11.11.2018','www.socaialmedia.com/cv/cv=?4123623')
+INSERT INTO CV(CVID,UserId,LastUptade,CvDate,CVLINK)
+VALUES (6,6,'01.05.2018','01.05.2018','www.socaialmedia.com/cv/cv=?4123443')
+INSERT INTO CV(CVID,UserId,LastUptade,CvDate,CVLINK)
+VALUES (7,7,'21.12.2018','21.12.2018','www.socaialmedia.com/cv/cv=?4123473')
+INSERT INTO CV(CVID,UserId,LastUptade,CvDate,CVLINK)
+VALUES (8,8,'01.01.2018','01.01.2018','www.socaialmedia.com/cv/cv=?4123333')
+INSERT INTO CV(CVID,UserId,LastUptade,CvDate,CVLINK)
+VALUES (9,9,'11.03.2018','11.03.2018','www.socaialmedia.com/cv/cv=?4123483')
+INSERT INTO CV(CVID,UserId,LastUptade,CvDate,CVLINK)
+VALUES (10,10,'04.04.2018','04.04.2018','www.socaialmedia.com/cv/cv=?4123463')
+INSERT INTO CV(CVID,UserId,LastUptade,CvDate,CVLINK)
+VALUES (11,11,'05.05.2018','05.05.2018','www.socaialmedia.com/cv/cv=?4123993')
+INSERT INTO CV(CVID,UserId,LastUptade,CvDate,CVLINK)
+VALUES (12,12,'21.11.2018','21.11.2018','www.socaialmedia.com/cv/cv=?4123573')
+INSERT INTO CV(CVID,UserId,LastUptade,CvDate,CVLINK)
+VALUES (13,13,'01.01.2018','01.01.2018','www.socaialmedia.com/cv/cv=?4123446')
+INSERT INTO CV(CVID,UserId,LastUptade,CvDate,CVLINK)
+VALUES (14,14,'01.03.2018','01.03.2018','www.socaialmedia.com/cv/cv=?4123434')
+INSERT INTO CV(CVID,UserId,LastUptade,CvDate,CVLINK)
+VALUES (15,15,'09.09.2018','09.09.2018','www.socaialmedia.com/cv/cv=?4123425')
+INSERT INTO CV(CVID,UserId,LastUptade,CvDate,CVLINK)
+VALUES (16,16,'01.01.2018','01.01.2018','www.socaialmedia.com/cv/cv=?4123425')
+INSERT INTO CV(CVID,UserId,LastUptade,CvDate,CVLINK)
+VALUES (17,17,'01.01.2018','01.01.2018','www.socaialmedia.com/cv/cv=?4123466')
+INSERT INTO CV(CVID,UserId,LastUptade,CvDate,CVLINK)
+VALUES (18,18,'09.09.2018','09.09.2018','www.socaialmedia.com/cv/cv=?412346')
+INSERT INTO CV(CVID,UserId,LastUptade,CvDate,CVLINK)
+VALUES (19,19,'05.01.2018','05.01.2018','www.socaialmedia.com/cv/cv=?4123409')
+INSERT INTO CV(CVID,UserId,LastUptade,CvDate,CVLINK)
+VALUES (20,20,'07.01.2018','07.01.2018','www.socaialmedia.com/cv/cv=?4123400')
+
+/********** SITE EVENT*******\
+INSERT INTO siteEvents(EventId,creatorId,EventName,CreatedDate,EventType,DateOfEvent,EventDescription)
+VALUES (1,1,'WELCOME PARTY','20.12.2017','Public','31.12.2017','we all wait you all')
+INSERT INTO siteEvents(EventId,creatorId,EventName,CreatedDate,EventType,DateOfEvent,EventDescription)
+VALUES (2,7,'CODING PARTY','10.10.2017','Public','14.10.2017','Do you want to improve your coding skill, we are waiting for you')
+INSERT INTO siteEvents(EventId,creatorId,EventName,CreatedDate,EventType,DateOfEvent,EventDescription)
+VALUES (3,20,'PICNIC','01.01.2018','Private','02.01.2018','Hello friends lets do picnic')
+
+/***** EVENTE KATILANLAR *****\
+INSERT INTO EventPeople(UserId,EventId,InterestStatus)
+VALUES (2,1,'Went')
+INSERT INTO EventPeople(UserId,EventId,InterestStatus)
+VALUES (3,1,'Not insteresting')
+INSERT INTO EventPeople(UserId,EventId,InterestStatus)
+VALUES (9,1,'Went')
+
+
+INSERT INTO EventPeople(UserId,EventId,InterestStatus)
+VALUES (5,2,'Went')
+INSERT INTO EventPeople(UserId,EventId,InterestStatus)
+VALUES (8,2,'Not insteresting')
+INSERT INTO EventPeople(UserId,EventId,InterestStatus)
+VALUES (11,2,'Went')
+
+
+INSERT INTO EventPeople(UserId,EventId,InterestStatus)
+VALUES (15,3,'Went')
+INSERT INTO EventPeople(UserId,EventId,InterestStatus)
+VALUES (17,3,'Not insteresting')
+INSERT INTO EventPeople(UserId,EventId,InterestStatus)
+VALUES (3,3,'Went')
+
+
+
+
+
+
+
+
+/**** gruplar *****\
+
+INSERT INTO GROUPS(GroupID,CreatorId,GroupName,CreatedDate,GroupType,GroupStatus,GroupDescription)
+VALUES (00001,3,'01.01.2016','JOBS IN USA','RECRUIT','CLOSED','We recturit people in USA')
+
+INSERT INTO GROUPS(GroupID,CreatorId,GroupName,CreatedDate,GroupType,GroupStatus,GroupDescription)
+VALUES (00002,15,'11.11.2018','LEARN HOW TO CODING','EDUCATION','PUBLIC','CODING COURSES')
+
+
+INSERT INTO GROUPS(GroupID,CreatorId,GroupName,CreatedDate,GroupType,GroupStatus,GroupDescription)
+VALUES (00003,7,'21.10.2018','UNIX LOVERS','FUN','PUBLIC','IF YOU LOVE UNIX  WE NEED YOU')
+
+
+
+/******* Grup üyleri **********\
+
+
+INSERT INTO MemberOfGroups(MemberId,GroupId,Role,JoinDate)
+VALUES (3,00001,'ADMIN','01.01.2016')
+
+INSERT INTO MemberOfGroups(MemberId,GroupId,Role,JoinDate)
+VALUES (4,00001,'MEMBER','03.01.2016')
+
+INSERT INTO MemberOfGroups(MemberId,GroupId,Role,JoinDate)
+VALUES (6,00001,'MEMBER','05.05.2016')
+
+INSERT INTO MemberOfGroups(MemberId,GroupId,Role,JoinDate)
+VALUES (8,00001,'MODERATOR','04.01.2016')
+
+INSERT INTO MemberOfGroups(MemberId,GroupId,Role,JoinDate)
+VALUES (15,00002,'ADMIN','11.11.2018')
+
+INSERT INTO MemberOfGroups(MemberId,GroupId,Role,JoinDate)
+VALUES (11,00002,'MEMBER','21.11.2018')
+
+INSERT INTO MemberOfGroups(MemberId,GroupId,Role,JoinDate)
+VALUES (12,00002,'MEMBER','05.11.2018')
+
+
+INSERT INTO MemberOfGroups(MemberId,GroupId,Role,JoinDate)
+VALUES (7,00003,'ADMIN','21.10.2018')
+
+INSERT INTO MemberOfGroups(MemberId,GroupId,Role,JoinDate)
+VALUES (8,00003,'MEMBER','22.10.2018')
+
+
+INSERT INTO MemberOfGroups(MemberId,GroupId,Role,JoinDate)
+VALUES (20,00003,'MEMBER','23.10.2018')
+
+/******* sayfalar **\
+
+
+INSERT INTO Page(PageID,CreatorId,PageName,CreatedDate,PageType,PageDescription)
+VALUES (1,5,'Java','01.01.2018','EDUCATION','This page help you with java')
+
+INSERT INTO Page(PageID,CreatorId,PageName,CreatedDate,PageType,PageDescription)
+VALUES (2,8,'C#','01.05.2018','EDUCATION','This page help you with c#')
+
+/***** sayfa üye ****\
+
+INSERT INTO MemberOfPage(MemberId,PageId,Role,JoinDate)
+VALUES (5,1,'ADMIN','01.01.2018')
+
+INSERT INTO MemberOfPage(MemberId,PageId,Role,JoinDate)
+VALUES (9,1,'MEMBER','02.01.2018')
+
+INSERT INTO MemberOfPage(MemberId,PageId,Role,JoinDate)
+VALUES (11,1,'MEMBER','03.01.2018')
+
+INSERT INTO MemberOfPage(MemberId,PageId,Role,JoinDate)
+VALUES (8,2,'ADMIN','01.05.2018')
+
+INSERT INTO MemberOfPage(MemberId,PageId,Role,JoinDate)
+VALUES (14,2,'ADMIN','01.05.2018')
+
+INSERT INTO MemberOfPage(MemberId,PageId,Role,JoinDate)
+VALUES (16,2,'MEMBER','21.05.2018')
+
+INSERT INTO MemberOfPage(MemberId,PageId,Role,JoinDate)
+VALUES (17,2,'MEMBER','11.05.2018')
+
+/****** Ýþ tecrübesi ******\
+
+
+
+
+INSERT INTO JobExperience(ExperienceId,UserId,companyId,Departman,DateOfStart,DateOfLastDay)
+VALUES (1,1,1001,'Software Engineering','01.01.2018','Still')
+
+INSERT INTO JobExperience(ExperienceId,UserId,companyId,Departman,DateOfStart,DateOfLastDay)
+VALUES (2,2,1003,'Software Engineering','01.01.2012','Still')
+
+INSERT INTO JobExperience(ExperienceId,UserId,companyId,Departman,DateOfStart,DateOfLastDay)
+VALUES (3,4,1004,'Translator','01.01.1997','01.01.2000')
+
+INSERT INTO JobExperience(ExperienceId,UserId,companyId,Departman,DateOfStart,DateOfLastDay)
+VALUES (4,4,1006,'Translator','01.01.2000','Still')
+
+INSERT INTO JobExperience(ExperienceId,UserId,companyId,Departman,DateOfStart,DateOfLastDay)
+VALUES (5,6,1005,'Game Developer','1987','1994')
+
+INSERT INTO JobExperience(ExperienceId,UserId,companyId,Departman,DateOfStart,DateOfLastDay)
+VALUES (6,6,1002,'Hardware Engineering','1994','01.01.2010')
+
+INSERT INTO JobExperience(ExperienceId,UserId,companyId,Departman,DateOfStart,DateOfLastDay)
+VALUES (7,6,1003,'Software Enginnering','01.01.2011','Still')
+
+INSERT INTO JobExperience(ExperienceId,UserId,companyId,Departman,DateOfStart,DateOfLastDay)
+VALUES (8,7,1009,'Software Engineering','07.07.2017','Still')
+
+INSERT INTO JobExperience(ExperienceId,UserId,companyId,Departman,DateOfStart,DateOfLastDay)
+VALUES (9,8,1008,'Software Engineering','20.11.2017','Still')
+
+INSERT INTO JobExperience(ExperienceId,UserId,companyId,Departman,DateOfStart,DateOfLastDay)
+VALUES (10,9,1007,'Software Engineering','11.11.2017','Still')
+
+INSERT INTO JobExperience(ExperienceId,UserId,companyId,Departman,DateOfStart,DateOfLastDay)
+VALUES (11,10,1003,'Software Engineering','01.01.2001','17.01.2005')
+
+INSERT INTO JobExperience(ExperienceId,UserId,companyId,Departman,DateOfStart,DateOfLastDay)
+VALUES (12,10,1005,'Software Engineering','20.02.2005','Still')
+
+INSERT INTO JobExperience(ExperienceId,UserId,companyId,Departman,DateOfStart,DateOfLastDay)
+VALUES (13,11,1002,'Hardware Engineering','10.11.2018','Still')
+
+INSERT INTO JobExperience(ExperienceId,UserId,companyId,Departman,DateOfStart,DateOfLastDay)
+VALUES (14,14,1010,'Software Engineering','01.01.2018','Still')
+
+INSERT INTO JobExperience(ExperienceId,UserId,companyId,Departman,DateOfStart,DateOfLastDay)
+VALUES (15,15,1009,'Software Engineering','20.11.2018','Still')
+
+INSERT INTO JobExperience(ExperienceId,UserId,companyId,Departman,DateOfStart,DateOfLastDay)
+VALUES (16,16,1004,'Software Engineering','01.07.2016','Still')
+
+INSERT INTO JobExperience(ExperienceId,UserId,companyId,Departman,DateOfStart,DateOfLastDay)
+VALUES (17,17,1005,'Software Engineering','23.11.2007','21.12.2009')
+
+
+INSERT INTO JobExperience(ExperienceId,UserId,companyId,Departman,DateOfStart,DateOfLastDay)
+VALUES (18,17,1003,'Software Engineering','01.01.2010','Still')
+
+INSERT INTO JobExperience(ExperienceId,UserId,companyId,Departman,DateOfStart,DateOfLastDay)
+VALUES (19,20,1004,'Software Engineering','13.05.2013','.13.02.2014')
+
+INSERT INTO JobExperience(ExperienceId,UserId,companyId,Departman,DateOfStart,DateOfLastDay)
+VALUES (20,20,1001,'Game Developer','.15.03.2014','Still')
+
+
+/** iþ ilanlarý ***\
+
+INSERT INTO Jobs(JobOfferId,companyId,Departman,Salary,JobLocation,NeededPeople)
+VALUES (1,1001,'Game Developer',4500,'USA/WASHINGTON',2)
+
+INSERT INTO Jobs(JobOfferId,companyId,Departman,Salary,JobLocation,NeededPeople)
+VALUES (2,1002,'Hardware Developer',5000,'USA/CALIFORNIA',1)
+
+INSERT INTO Jobs(JobOfferId,companyId,Departman,Salary,JobLocation,NeededPeople)
+VALUES (3,1003,'Java Developer',NULL,'USA/CALIFORNIA',1)
+
+INSERT INTO Jobs(JobOfferId,companyId,Departman,Salary,JobLocation,NeededPeople)
+VALUES (4,1006,'Game Developer',3500,'JP/TOKYO',6)
+
+INSERT INTO Jobs(JobOfferId,companyId,Departman,Salary,JobLocation,NeededPeople)
+VALUES (5,1007,'Android Developer',Null,'KR/SEUL',15)
+
+INSERT INTO Jobs(JobOfferId,companyId,Departman,Salary,JobLocation,NeededPeople)
+VALUES (6,1009,'Marketer',NULL,'USA/CALIFORNIA',1)
+
+INSERT INTO Jobs(JobOfferId,companyId,Departman,Salary,JobLocation,NeededPeople)
+VALUES (7,1005,'IT Engineer',NULL,'USA/NEW MEXICO',2)
+
+INSERT INTO Jobs(JobOfferId,companyId,Departman,Salary,JobLocation,NeededPeople)
+VALUES (8,1006,'Hardware Developer',NULL,'JP/TOKYO',3)
+
+INSERT INTO Jobs(JobOfferId,companyId,Departman,Salary,JobLocation,NeededPeople)
+VALUES (9,1006,'Andorid Developer',2500,'JP/TOKYO',2)
+
+/**** Triggerlar *******\
+
+
+------ARKADAÞ LÝSTESÝNE EKLER SÝLER
+CREATE TRIGGER Adding_Friend ON Friend
+AFTER INSERT
+AS Begin
+Declare @gecici int
+Declare @gecici2 int
+ select @gecici = Friend.PersonId , @gecici2 =Friend.Person2Id
+		from friend
+
+insert into Friend select PersonId=@gecici2,Person2Id=@gecici from Inserted
+End
+go
+
+-------HER MESAJ GELDÝÐÝNDE BÝLDÝRÝM DÖNDÜRÜR
+CREATE TRIGGER Adding_Notification ON Chat
+AFTER INSERT
+AS Begin
+Declare @gecici varchar(max)
+Declare @gecici2 int
+
+ select @gecici = Chat.MessageDate ,@gecici2=Chat.ReceiverId
+		from Chat
+
+insert into Notifications select @gecici2,'Message',@gecici
+
+End
+go
+---------ornerk-------
+
+insert into Friend(PersonId,Person2Id)
+values(23,24)
+
+ALTER trigger Deleting_Friend on dboFriend
+After delete
+as
+begin
+Declare @gecici int
+Declare @gecici2 int
+Select @gecici=PersonId,@gecici2=Person2Id from deleted
+DELETE FROM Friend WHERE PersonId=@gecici2 and Person2Id=@gecici
+End
+
+
+
+delete from Friend where PersonId=23 and Person2Id=24
+
+
+CREATE TRIGGER Delete_Jobs ON Jobs
+AFTER UPDATE
+AS Begin
+
+Declare @Count int
+select @count = NeededPeople from Jobs
+Delete from Jobs where NeededPeople=@Count 
+
+End
+go
+
+---------ornek--------
+insert into Jobs(JobOfferId,companyId,Departman,Salary,JobLocation,NeededPeople)
+Values(15,1001,'asdasd',2,'usa',5)
+
+UPDATE Jobs
+SET NeededPeople=0
+WHERE JobOfferId=15
+
+
+
+insert into Chat(MessageId,SenderID,ReceiverID,Message,MessageDate)
+values(1,1,2,'Selam','01.01.2018 15:15')
+
+insert into Chat(MessageId,SenderID,ReceiverID,Message,MessageDate)
+values(2,2,1,'Selam','01.01.2018 15:17')
+
+insert into Chat(MessageId,SenderID,ReceiverID,Message,MessageDate)
+values(3,1,2,'nasilsin','01.01.2018 15:19')
+
+insert into Chat(MessageId,SenderID,ReceiverID,Message,MessageDate)
+values(4,2,1,'iyiyim sen','01.01.2018 15:21')
+
+insert into Chat(MessageId,SenderID,ReceiverID,Message,MessageDate)
+values(5,1,2,'Ben de iyiyim coluk cocuk nasil','01.01.2018 15:23')
+
+insert into Chat(MessageId,SenderID,ReceiverID,Message,MessageDate)
+values(6,2,1,'Harika ','01.01.2018 15:24')
+
+
+insert into Notifications(userId,NotificationType,NotificationDate)
+Values(1,'Message','01.01.2018 15:15')
+
+insert into Notifications(userId,NotificationType,NotificationDate)
+Values(2,'Message','01.01.2018 15:19')
+
+insert into Notifications(userId,NotificationType,NotificationDate)
+Values(1,'Message','01.01.2018 15:21')
+
+insert into Notifications(userId,NotificationType,NotificationDate)
+Values(2,'Message','01.01.2018 15:23')
+
+insert into Notifications(userId,NotificationType,NotificationDate)
+Values(1,'Message','01.01.2018 15:24')
+
+
+
+
+
+create trigger PageGroups on	MemberOfGroups
+after insert
+as begin
+Declare @role Varchar(15)
+select @role=MemberOfGroups.Role from MemberOfGroups
+if (@role!='Member' and @role!='Admin' and @role!='Moderator')
+begin
+rollback transaction
+raiserror('UNKNOWN ROLE ',16,1)
+end
+end
+
+create trigger RolesPage on	MemberOfPage
+after insert
+as begin
+Declare @role Varchar(15)
+select @role=MemberOfPage.Role from MemberOfPage
+if (@role!='Member' and @role!='Admin' and @role!='Moderator')
+begin
+rollback transaction
+raiserror('UNKNOWN ROLE ',16,1)
+end
+end
+
+create trigger Needed on	Jobs
+after insert
+as begin
+Declare @Count int
+select @Count=Jobs.NeededPeople from Jobs
+if (@Count<=0)
+begin
+rollback transaction
+raiserror('Needed Person cannot be lower than 1 ',16,1)
+end
+end
+
+/***** checkler ****\
+
+
+ALTER TABLE EventPeople
+ADD CONSTRAINT Statuses
+Check ( InterestStatus in ('went','Not insteresting','Interesting'));
+
+ALTER TABLE GROUPS
+ADD CONSTRAINT GroupStatus
+Check ( GroupStatus in ('CLOSED','PUBLIC','HIDDEN'));
+
+ALTER TABLE UserProfile
+ADD CONSTRAINT Relationship
+Check ( Relationship in('Single','Married','In Relationship','Widow'));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----------selectler----------
+
+
+1
+id si verilen kiþinin arkadaþ listesi
+
+select Person2Id from Friend
+where PersonId=1
+2
+California daki iþ ilanlarý
+
+
+select companyId,Departman,Salary,NeededPeople from Jobs
+where JobLocation='USA/CALIFORNIA'
+
+
+3
+1 kiþinin takipçileri
+
+
+
+select FollowerId from Follow
+where PersonId=25
+4
+Hardware firmalarýný göster
+
+select CompanyType.TypeName,Company.CompanyName from CompanyType,Company
+where CompanyType.TypeName like '%Hardware%' and CompanyType.companyId=Company.companyId
+
+5
+User'larýn cv leri
+
+
+select SiteUser.Firstname ,SiteUser.Lastname, CV.CVLINK from CV,SiteUser
+where SiteUser.UserId=CV.UserId
+
+6
+
+Mesajlasma gecmisi
+
+Select Chat.Message,Chat.MessageDate,SiteUser.Firstname as Sender
+from Chat,SiteUser
+where  SiteUser.UserId=Chat.SenderID
+
+7
+Bir kiþinin  iþ tecrübeleri
+
+
+select SiteUser.Firstname ,SiteUser.Lastname, Company.CompanyName,JobExperience.Departman,JobExperience.DateOfStart,JobExperience.DateOfLastDay
+ from SiteUser,Company,JobExperience
+where SiteUser.UserId=JobExperience.UserId and Company.companyId=JobExperience.companyId
+
+
+
+8
+JOBS IN USA GRUBUNDAKÝ SADECE ROLU MEMBER OLAN KÝÞÝLER
+
+select  Groups.GroupName,SiteUser.Lastname,SiteUser.Firstname,MemberOfGroups.Role
+from MemberOfGroups,GROUPS,SiteUser
+
+Where Groups.GroupName='JOBS IN USA' and MemberOfGroups.role='Member'
+ and GROUPS.GroupID=MemberOfGroups.GroupId and MemberOfGroups.MemberId=SiteUser.UserId
+
+9
+bekar olan insanlarýn cv leri
+
+select CV.CVLINK,SiteUser.Firstname,SiteUser.Lastname,SiteUser.Email
+from CV,SiteUser,UserProfile
+where UserProfile.Relationship='Single' and CV.UserId=SiteUser.UserId and SiteUser.UserId=User
+
+10 
+1 evente giden kiþiler ve durumlarý
+
+
+select siteEvents.DateOfEvent,siteEvents.EventName,SiteUser.Firstname,SiteUser.Lastname,EventPeople.InterestStatus
+from SiteUser,siteEvents,EventPeople
+where EventPeople.UserId=SiteUser.UserId and EventPeople.EventId=siteEvents.EventId
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+INSERT UPTADE DELETE
+
+INSERT INTO SiteUser(UserId, Firstname, Lastname,Email,DateOfBirth,UserPassword,UserName,Phone)
+VALUES (50,'Ahmet' ,'Cekirdekci' ,'Ahmet@gmail.com' ,'08.02.1996' ,'3325aasd' , 'SAhmet',7795547)
+
+
+UPDATE SiteUser
+SET Phone=545645996
+WHERE UserId=50
+
+
+
+DELETE FROM SiteUser WHERE UserId=50
+
+
+
+
+
+INSERT INTO Company(companyId, CompanyName, CompanyLocation,DateOfFoundation,Founder)
+VALUES (1011,'Sierra','USA/CALIFORNIA','1979','Roberta Williams, Ken Williams')
+
+UPDATE Company
+SET DateOfFoundation =1980
+WHERE companyId=1011
+
+delete from Company Where companyId=1011
+
+
+
+
+INSERT INTO Page(PageID,CreatorId,PageName,CreatedDate,PageType,PageDescription)
+VALUES (20,5,'Java','05.01.2018','FUN','LETS MAKE FUN')
+
+
+
+UPDATE Page
+SET PageDescription ='we hate fun'
+WHERE PageID=20
+
+delete from Page Where PageID=20
